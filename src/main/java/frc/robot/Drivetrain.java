@@ -23,10 +23,10 @@ public class Drivetrain {
   private final Translation2d m_backLeftLocation = new Translation2d(-0.381, 0.381);
   private final Translation2d m_backRightLocation = new Translation2d(-0.381, -0.381);
 
-  private final SwerveModule m_frontLeft = new SwerveModule(2, 1);
-  private final SwerveModule m_frontRight = new SwerveModule(4, 3);
-  private final SwerveModule m_backLeft = new SwerveModule(6, 5);
-  private final SwerveModule m_backRight = new SwerveModule(8, 7);
+  private final SwerveModule m_frontLeft = new SwerveModule(13, 12); //BIG BONGO 2
+  private final SwerveModule m_frontRight = new SwerveModule(2, 3); //BIG BONGO 1
+  private final SwerveModule m_backLeft = new SwerveModule(14, 15); //BIG BONGO 3
+  private final SwerveModule m_backRight = new SwerveModule(50, 1); //BIG BONGO 4
 
   private final AHRS m_gyro = new AHRS(Port.kUSB);
 
@@ -59,10 +59,9 @@ public class Drivetrain {
     m_frontRight.setDesiredState(swerveModuleStates[1]);
     m_backLeft.setDesiredState(swerveModuleStates[2]);
     m_backRight.setDesiredState(swerveModuleStates[3]);
-    System.out.println("yaw: " + m_gyro.getYaw());
-    System.out.println("X axis: " + m_gyro.getRawGyroX());
-    System.out.println("Y axis: " + m_gyro.getRawGyroY());
-    System.out.println("Z axis: " + m_gyro.getRawGyroZ());
+    //System.out.println("X Speed: " + xSpeed + " | Y Speed: " + ySpeed + " | Rotation: " + rot);
+    //System.out.println(m_gyro.getYaw());
+    
 
   }
 }

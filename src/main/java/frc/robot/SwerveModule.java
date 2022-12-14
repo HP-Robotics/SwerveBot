@@ -7,9 +7,13 @@ package frc.robot;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+
+import javax.swing.plaf.basic.BasicBorders.RadioButtonBorder;
 import javax.xml.namespace.QName;
+import javax.xml.transform.TransformerConfigurationException;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 
@@ -24,6 +28,7 @@ public class SwerveModule {
       2 * Math.PI; // radians per second squared
   private final TalonFX m_driveMotor;
   private final TalonFX m_turningMotor;
+  
 
 
   /**
@@ -38,7 +43,12 @@ public class SwerveModule {
       int turningMotorChannel
      ) {
     m_driveMotor = new TalonFX(driveMotorChannel);
+    m_driveMotor.setNeutralMode(NeutralMode.Coast);
     m_turningMotor = new TalonFX(turningMotorChannel);
+  
+    m_turningMotor.configFactoryDefault();
+    m_turningMotor.config_kP(0, .1);
+    m_turningMotor.config_kD(0, 1);
 
     // Set the distance per pulse for the drive encoder. We can simply use the
     // distance traveled for one rotation of the wheel divided by the encoder
@@ -57,6 +67,16 @@ public class SwerveModule {
     return m_turningMotor.getSensorCollection().getIntegratedSensorAbsolutePosition();
   }
 
+  public double radiansToTicks(double radians) {
+    //drive ratio: 6.75:1
+    //rotation ratio: 15.429:1
+    return radians * ((2048*15.429)/(2*Math.PI));
+  }
+
+  public double ticksToRadians(double ticks) {
+    return ticks * ((2*Math.PI)/(2048*15.429));
+  } 
+
   /**
    * Sets the desired state for the module.
    *
@@ -64,12 +84,18 @@ public class SwerveModule {
    */
   public void setDesiredState(SwerveModuleState desiredState) {
         // Optimize the reference state to avoid spinning further than 90 degrees
-        //SwerveModuleState state =
-        //SwerveModuleState.optimize(desiredState, new Rotation2d(m_turningEncoder.getDistance()));
+        SwerveModuleState state =
+        SwerveModuleState.optimize(desiredState, new Rotation2d(ticksToRadians(m_turningMotor.getSelectedSensorPosition())));
+
+        System.out.println(m_turningMotor.getSelectedSensorPosition() + " | " + radiansToTicks(state.angle.getRadians()) + " | " + m_turningMotor.getClosedLoopError());
 
     //m_driveMotor.set(ControlMode.Velocity, metersToTicks(state.speedMetersPerSecond));
+     //System.out.println(radiansToTicks(desiredState.angle.getDegrees()));
      
-    //m_turningMotor.set(ControlMode.Position, radiansToTicks(state.angle.getRadians()));
+   m_turningMotor.set(ControlMode.Position, radiansToTicks(state.angle.getRadians()));
+    m_driveMotor.set(ControlMode.PercentOutput, state.speedMetersPerSecond/10);
+   
+   
 
 
   
