@@ -86,14 +86,17 @@ public class SwerveModule {
         // Optimize the reference state to avoid spinning further than 90 degrees
         SwerveModuleState state =
         SwerveModuleState.optimize(desiredState, new Rotation2d(ticksToRadians(m_turningMotor.getSelectedSensorPosition())));
+        Rotation2d currentState = new Rotation2d(ticksToRadians(m_turningMotor.getSelectedSensorPosition()));
 
-        System.out.println(m_turningMotor.getSelectedSensorPosition() + " | " + radiansToTicks(state.angle.getRadians()) + " | " + m_turningMotor.getClosedLoopError());
+        //System.out.println(m_turningMotor.getSelectedSensorPosition() + " | " + radiansToTicks(state.angle.getRadians()) + " | " + m_turningMotor.getClosedLoopError());
 
     //m_driveMotor.set(ControlMode.Velocity, metersToTicks(state.speedMetersPerSecond));
      //System.out.println(radiansToTicks(desiredState.angle.getDegrees()));
      
    m_turningMotor.set(ControlMode.Position, radiansToTicks(state.angle.getRadians()));
     m_driveMotor.set(ControlMode.PercentOutput, state.speedMetersPerSecond/10);
+    //System.out.println("Output: " + -radiansToTicks(state.angle.getRadians()) + " | Input: " + desiredState.angle.getDegrees() + " | In-Between: " + state.angle.getDegrees() + " | Current Wheel Position: " + currentState.getDegrees() + "Speed Output: " + state.speedMetersPerSecond/10 + " | Speed In-Between: " + desiredState.speedMetersPerSecond/10);
+    //System.out.println("Speed Output: " + state.speedMetersPerSecond/10 + " | Speed In-Between: " + desiredState.speedMetersPerSecond/10 + " | Current Wheel Position: " + currentState.getDegrees());
    
    
 

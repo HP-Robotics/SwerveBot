@@ -19,13 +19,15 @@ public class Robot extends TimedRobot {
   private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(3);
 
   @Override
-  public void autonomousPeriodic() {
+  public void testPeriodic() {
+    //m_swerve.drive(0, 0.2, 0, false);
     driveWithJoystick(false);
+    //System.out.println("Im in test mode");
   }
 
   @Override
   public void teleopPeriodic() {
-    driveWithJoystick(false);
+    driveWithJoystick(true);
   }
 
   private void driveWithJoystick(boolean fieldRelative) {
@@ -41,7 +43,6 @@ public class Robot extends TimedRobot {
     final var ySpeed =
         -m_yspeedLimiter.calculate(MathUtil.applyDeadband(m_controller.getLeftX(), 0.02))
             * Drivetrain.kMaxSpeed;
-
     // Get the rate of angular rotation. We are inverting this because we want a
     // positive value when we pull to the left (remember, CCW is positive in
     // mathematics). Xbox controllers return positive values when you pull to

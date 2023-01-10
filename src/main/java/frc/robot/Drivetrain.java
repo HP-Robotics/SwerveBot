@@ -18,10 +18,10 @@ public class Drivetrain {
   public static final double kMaxSpeed = 3.0; // 3 meters per second
   public static final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
 
-  private final Translation2d m_frontLeftLocation = new Translation2d(0.381, 0.381);
-  private final Translation2d m_frontRightLocation = new Translation2d(0.381, -0.381);
-  private final Translation2d m_backLeftLocation = new Translation2d(-0.381, 0.381);
-  private final Translation2d m_backRightLocation = new Translation2d(-0.381, -0.381);
+  private final Translation2d m_frontLeftLocation = new Translation2d(0.244, -0.244);
+  private final Translation2d m_frontRightLocation = new Translation2d(0.244, 0.244);
+  private final Translation2d m_backLeftLocation = new Translation2d(-0.244, -0.244);
+  private final Translation2d m_backRightLocation = new Translation2d(-0.244, 0.244);
 
   private final SwerveModule m_frontLeft = new SwerveModule(13, 12); //BIG BONGO 2
   private final SwerveModule m_frontRight = new SwerveModule(2, 3); //BIG BONGO 1
@@ -61,6 +61,7 @@ public class Drivetrain {
     m_backRight.setDesiredState(swerveModuleStates[3]);
     //System.out.println("X Speed: " + xSpeed + " | Y Speed: " + ySpeed + " | Rotation: " + rot);
     //System.out.println(m_gyro.getYaw());
+    //System.out.println("Swerve Stuff" + swerveModuleStates[0].angle + " y " + ySpeed);
     
 
   }
