@@ -49,6 +49,7 @@ public class SwerveModule {
     m_turningMotor.configFactoryDefault();
     m_turningMotor.config_kP(0, .1);
     m_turningMotor.config_kD(0, 1);
+    m_turningMotor.setInverted(true);
 
     // Set the distance per pulse for the drive encoder. We can simply use the
     // distance traveled for one rotation of the wheel divided by the encoder
